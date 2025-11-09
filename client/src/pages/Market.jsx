@@ -4,7 +4,7 @@ export default function Market(){
   const [products, setProducts] = useState([]);
 
   useEffect(()=>{
-    fetch("http://localhost:4000/products")
+    fetch("https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev/products")
       .then(r=>r.json())
       .then(setProducts)
       .catch(console.error);

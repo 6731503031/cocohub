@@ -4,7 +4,7 @@ export default function Varieties(){
   const [items, setItems] = useState([]);
 
   useEffect(()=>{
-    fetch("http://localhost:4000/varieties")
+    fetch("https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev/varieties")
       .then(r=>r.json())
       .then(setItems)
       .catch(console.error);

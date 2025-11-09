@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:4000', // backend server
+        target: 'https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev', // backend server
         changeOrigin: true,
         secure: false,
       },

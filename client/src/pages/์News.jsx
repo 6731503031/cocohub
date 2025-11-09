@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function News(){
   const [list, setList] = useState([]);
   useEffect(()=>{
-    fetch("http://localhost:4000/news")
+    fetch("https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev/news")
       .then(r=>r.json())
       .then(setList)
       .catch(console.error);

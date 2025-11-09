@@ -16,7 +16,7 @@ export default function PriceTracker(){
   const [data, setData] = useState(null);
 
   useEffect(()=>{
-    fetch("http://localhost:4000/market")
+    fetch("https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev/market")
       .then(r=>r.json())
       .then(rows=>{
         // assume rows like [{product_name, price_per_kg, date}, ...]

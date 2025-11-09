@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function Dashboard(){
   const [users, setUsers] = useState([]);
   useEffect(()=>{
-    fetch("http://localhost:4000/dashboard/users")
+    fetch("https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev/dashboard/users")
       .then(r=>r.json())
       .then(setUsers)
       .catch(console.error);
