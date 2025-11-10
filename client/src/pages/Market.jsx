@@ -1,33 +1,48 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
+import { SearchContext } from "../SearchContext";
+import { fetchProducts } from "../api";
+import ProductCard from "../components/ProductCard";
 
 export default function Market(){
   const [products, setProducts] = useState([]);
+  const { debouncedQuery } = useContext(SearchContext);
 
   useEffect(()=>{
-    fetch("https://effective-goggles-x5pv5w6w59jw2vp94-4000.app.github.dev/products")
-      .then(r=>r.json())
-      .then(setProducts)
-      .catch(console.error);
+    let mounted = true;
+    fetchProducts()
+      .then(list => {
+        if (!mounted) return;
+        setProducts(Array.isArray(list) ? list : []);
+      })
+      .catch(err => {
+        console.error(err);
+        setProducts([]);
+      });
+    return () => { mounted = false; };
   },[]);
+
+  const available = useMemo(() => products.filter(p => p.isAvailable !== false), [products]);
+
+  const filtered = useMemo(() => {
+    const q = debouncedQuery?.trim().toLowerCase() || "";
+    if (!q) return available;
+    return available.filter(p => {
+      const text = [p.name, p.category, p.producer, p.description].join(" ").toLowerCase();
+      return text.includes(q);
+    });
+  }, [available, debouncedQuery]);
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-coconut-green mb-6">Marketplace</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map(p=>(
-          <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col card-hover">
-            <img src={p.image || '/placeholder.jpg'} alt={p.name} className="w-full h-44 object-cover rounded-xl"/>
-            <div className="mt-3 flex-1">
-              <h3 className="text-lg font-semibold text-forest">{p.name}</h3>
-              <p className="text-gray-600 mt-1">{p.description}</p>
-            </div>
-            <div className="mt-3 flex items-center justify-between">
-              <span className="text-green-700 font-bold">฿{p.price}</span>
-              <a className="bg-coconut-green text-white px-3 py-2 rounded-lg" href={p.contact || '#'} target="_blank" rel="noreferrer">Contact Seller</a>
-            </div>
-          </div>
-        ))}
-      </div>
+      <h1 className="text-3xl font-bold text-coconut-green mb-6">ผลิตภัณฑ์จากมะพร้าว</h1>
+
+      {filtered.length === 0 ? (
+        <div className="text-center text-gray-600">ไม่พบผลลัพธ์ (No results found)</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map(p => <ProductCard key={p.id} product={p} />)}
+        </div>
+      )}
     </div>
   );
 }
