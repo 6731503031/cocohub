@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Varieties from "./pages/Varieties";
+import VarietyDetail from "./pages/VarietyDetail";
 import Market from "./pages/Market";
 import News from "./pages/์News";
 import PriceTracker from "./pages/PriceTracker";
@@ -20,6 +21,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/varieties" element={<Varieties />} />
+          <Route path="/variety/:id" element={<VarietyDetail />} />
           <Route path="/market" element={<Market />} />
           <Route path="/news" element={<News />} />
           <Route path="/price-tracker" element={<PriceTracker />} />
